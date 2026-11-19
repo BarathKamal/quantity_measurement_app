@@ -11,13 +11,12 @@ public class QuantityMeasurementApp {
                 + length1.equals(length2));
     }
 
-
     // uc5: unit-to-unit conversion
     // Converts a raw value between two units
     public static void demonstrateLengthConversion(
             double value,
-            Length.LengthUnit sourceUnit,
-            Length.LengthUnit targetUnit) {
+            LengthUnit sourceUnit,
+            LengthUnit targetUnit) {
 
         double result = Length.convert(value, sourceUnit, targetUnit);
 
@@ -28,7 +27,7 @@ public class QuantityMeasurementApp {
     // uc5: unit-to-unit conversion
     // Converts an existing Length object into the target unit
     public static void demonstrateLengthConversion(
-            Length length, Length.LengthUnit targetUnit) {
+            Length length, LengthUnit targetUnit) {
 
         Length convertedLength = length.convertTo(targetUnit);
 
@@ -51,7 +50,7 @@ public class QuantityMeasurementApp {
     // Demonstrates addition with an explicitly specified result unit
     public static Length demonstrateLengthAddition(
             Length length1, Length length2,
-            Length.LengthUnit targetUnit) {
+            LengthUnit targetUnit) {
 
         Length result = length1.add(length2, targetUnit);
 
@@ -63,30 +62,30 @@ public class QuantityMeasurementApp {
     // Main method
     public static void main(String[] args) {
 
-        Length length1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length length2 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(12.0, LengthUnit.INCHES);
 
         // Result in Feet
         demonstrateLengthAddition(
-                length1, length2, Length.LengthUnit.FEET);
+                length1, length2, LengthUnit.FEET);
 
         // Result in Inches
         demonstrateLengthAddition(
-                length1, length2, Length.LengthUnit.INCHES);
+                length1, length2, LengthUnit.INCHES);
 
         // Result in Yards
         demonstrateLengthAddition(
-                length1, length2, Length.LengthUnit.YARDS);
+                length1, length2, LengthUnit.YARDS);
 
         // Result in Centimeters
         demonstrateLengthAddition(
-                length1, length2, Length.LengthUnit.CENTIMETERS);
+                length1, length2, LengthUnit.CENTIMETERS);
 
         // Different operand units and target unit
         demonstrateLengthAddition(
-                new Length(1.0, Length.LengthUnit.YARDS),
-                new Length(3.0, Length.LengthUnit.FEET),
-                Length.LengthUnit.INCHES);
+                new Length(1.0, LengthUnit.YARDS),
+                new Length(3.0, LengthUnit.FEET),
+                LengthUnit.INCHES);
     }
 
 }

@@ -6,39 +6,28 @@ package com.bridgelabz;
 public class Length {
 
     // uc4: extended unit support
-    // Enum representing length units and their conversion factors to inches
-    public enum LengthUnit {
-        FEET(12.0),
-        INCHES(1.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);
-
-        private final double conversionFactor;
-
-        // Initializes the conversion factor for each unit
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
-        }
-
-        // Returns the conversion factor
-        public double getConversionFactor() {
-            return conversionFactor;
-        }
-    }
-
 
     private final double value;
     private final LengthUnit unit;
-
-    // Initializes the length value and its unit
+    
+    // uc8: refactoring unit enum to standalone class
+    // Initializes a valid immutable length measurement
     public Length(double value, LengthUnit unit) {
+
+        if (!Double.isFinite(value) || unit == null) {
+            throw new IllegalArgumentException("Invalid length measurement");
+        }
+
         this.value = value;
         this.unit = unit;
     }
 
-    // Converts the measurement into the base unit (inches)
+
+
+    // uc8: refactoring unit enum to standalone class
+    // Delegates conversion to the LengthUnit enum
     private double convertToBaseUnit() {
-        return value * unit.getConversionFactor();
+        return unit.convertToBaseUnit(value);
     }
 
     // Compares two Length objects after converting them into inches
@@ -68,7 +57,8 @@ public class Length {
     }
 
     // uc5: unit-to-unit conversion
-    // Converts a value from source unit to target unit
+    // uc8: refactoring unit enum to standalone class
+    // Converts a value between two units using feet as the base unit
     public static double convert(double value, LengthUnit sourceUnit,
                                  LengthUnit targetUnit) {
 
@@ -77,8 +67,8 @@ public class Length {
             throw new IllegalArgumentException("Invalid conversion input");
         }
 
-        double baseValue = value * sourceUnit.getConversionFactor();
-        double result = baseValue / targetUnit.getConversionFactor();
+        double baseValue = sourceUnit.convertToBaseUnit(value);
+        double result = targetUnit.convertFromBaseUnit(baseValue);
 
         if (!Double.isFinite(result)) {
             throw new IllegalArgumentException("Conversion result is out of range");
@@ -88,13 +78,15 @@ public class Length {
     }
 
     // uc5: unit-to-unit conversion
-    // Converts the current Length object into a new target unit object
+    // uc8: refactoring unit enum to standalone class
+    // Converts the current measurement into the specified target unit
     public Length convertTo(LengthUnit targetUnit) {
 
-        double convertedValue = convert(this.value, this.unit, targetUnit);
+        double convertedValue = convert(value, unit, targetUnit);
 
         return new Length(convertedValue, targetUnit);
     }
+
 
     // uc5: unit-to-unit conversion
     // Returns a readable representation of the length measurement
@@ -138,7 +130,7 @@ public class Length {
         }
 
         // Convert the sum into the specified target unit
-        double result = sum / targetUnit.getConversionFactor();
+        double result = targetUnit.convertFromBaseUnit(sum);
 
         if (!Double.isFinite(result)) {
             throw new IllegalArgumentException("Conversion result is out of range");
