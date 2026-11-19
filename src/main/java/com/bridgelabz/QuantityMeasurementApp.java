@@ -59,33 +59,76 @@ public class QuantityMeasurementApp {
         return result;
     }
 
+    // uc9: weight measurement equality, conversion, and addition
+    // Compares two weight measurements for equality
+    public static boolean demonstrateWeightEquality(
+            QuantityWeight weight1, QuantityWeight weight2) {
+
+        return weight1.equals(weight2);
+    }
+
+    // Demonstrates conversion between two weight units
+    public static QuantityWeight demonstrateWeightConversion(
+            double value, WeightUnit fromUnit, WeightUnit toUnit) {
+
+        QuantityWeight weight = new QuantityWeight(value, fromUnit);
+        return weight.convertTo(toUnit);
+    }
+
+    // Converts an existing weight object into the target unit
+    public static QuantityWeight demonstrateWeightConversion(
+            QuantityWeight weight, WeightUnit targetUnit) {
+
+        return weight.convertTo(targetUnit);
+    }
+
+    // Adds two weights and returns the result in the first operand's unit
+    public static QuantityWeight demonstrateWeightAddition(
+            QuantityWeight weight1, QuantityWeight weight2) {
+
+        return weight1.add(weight2);
+    }
+
+    // Adds two weights and returns the result in the specified target unit
+    public static QuantityWeight demonstrateWeightAddition(
+            QuantityWeight weight1, QuantityWeight weight2,
+            WeightUnit targetUnit) {
+
+        return weight1.add(weight2, targetUnit);
+    }
+
     // Main method
     public static void main(String[] args) {
 
-        Length length1 = new Length(1.0, LengthUnit.FEET);
-        Length length2 = new Length(12.0, LengthUnit.INCHES);
+        // Weight equality
+        QuantityWeight weight1 =
+                new QuantityWeight(1.0, WeightUnit.KILOGRAM);
 
-        // Result in Feet
-        demonstrateLengthAddition(
-                length1, length2, LengthUnit.FEET);
+        QuantityWeight weight2 =
+                new QuantityWeight(1000.0, WeightUnit.GRAM);
 
-        // Result in Inches
-        demonstrateLengthAddition(
-                length1, length2, LengthUnit.INCHES);
+        System.out.println("Weight equality: "
+                + demonstrateWeightEquality(weight1, weight2));
 
-        // Result in Yards
-        demonstrateLengthAddition(
-                length1, length2, LengthUnit.YARDS);
+        // Weight conversion
+        System.out.println("Weight conversion: "
+                + demonstrateWeightConversion(
+                2.0, WeightUnit.POUND, WeightUnit.KILOGRAM));
 
-        // Result in Centimeters
-        demonstrateLengthAddition(
-                length1, length2, LengthUnit.CENTIMETERS);
+        // Addition with implicit target unit
+        QuantityWeight weight3 =
+                new QuantityWeight(1.0, WeightUnit.KILOGRAM);
 
-        // Different operand units and target unit
-        demonstrateLengthAddition(
-                new Length(1.0, LengthUnit.YARDS),
-                new Length(3.0, LengthUnit.FEET),
-                LengthUnit.INCHES);
+        QuantityWeight weight4 =
+                new QuantityWeight(1000.0, WeightUnit.GRAM);
+
+        System.out.println("Weight addition: "
+                + demonstrateWeightAddition(weight3, weight4));
+
+        // Addition with explicit target unit
+        System.out.println("Weight addition with target unit: "
+                + demonstrateWeightAddition(
+                weight3, weight4, WeightUnit.GRAM));
     }
 
 }
