@@ -31,3 +31,7 @@ Extend the application to perform addition between two length measurements, incl
 #### Use Case 7: Addition with Target Unit Specification
 
 Extend the addition functionality to allow users to explicitly specify the target unit in which the addition result should be returned.
+
+#### Use Case 8: Refactoring Unit Enum to Standalone with Conversion Responsibility
+
+Refactor the LengthUnit enum into a standalone class and delegate unit conversion responsibilities to it, improving separation of concerns, reducing coupling, and supporting scalability.
