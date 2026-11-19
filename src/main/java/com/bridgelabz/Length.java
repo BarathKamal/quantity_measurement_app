@@ -5,10 +5,13 @@ package com.bridgelabz;
 
 public class Length {
 
-   // Enum representing length units and their conversion factors to inches
+    // uc4: extended unit support
+    // Enum representing length units and their conversion factors to inches
     public enum LengthUnit {
         FEET(12.0),
-        INCHES(1.0);
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393701);
 
         private final double conversionFactor;
 
@@ -22,6 +25,7 @@ public class Length {
             return conversionFactor;
         }
     }
+
 
     private final double value;
     private final LengthUnit unit;
