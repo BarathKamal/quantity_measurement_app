@@ -35,3 +35,7 @@ Extend the addition functionality to allow users to explicitly specify the targe
 #### Use Case 8: Refactoring Unit Enum to Standalone with Conversion Responsibility
 
 Refactor the LengthUnit enum into a standalone class and delegate unit conversion responsibilities to it, improving separation of concerns, reducing coupling, and supporting scalability.
+
+#### Use Case 9: Weight Measurement Equality, Conversion, and Addition (Kilogram, Gram, Pound)
+
+Extend the Quantity Measurement App to support weight measurements by implementing equality comparison, unit conversion, and addition across Kilogram, Gram, and Pound while keeping weight and length categories independent.
