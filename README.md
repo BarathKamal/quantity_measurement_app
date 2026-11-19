@@ -19,3 +19,8 @@ Refactor the separate Feet and Inches classes into a single generic Length class
 #### Use Case 4: Extended Unit Support
 
 Extend the Length class to support Yards and Centimeters by adding their conversion factors, enabling equality comparisons across all four length units.
+
+#### Use Case 5: Unit-to-Unit Conversion (Same Measurement Type)
+
+Implement conversion operations between Feet, Inches, Yards, and Centimeters using centralized conversion factors, supporting both static and instance-based conversion methods.
+
