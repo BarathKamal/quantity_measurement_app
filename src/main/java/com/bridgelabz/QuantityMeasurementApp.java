@@ -12,32 +12,50 @@ public class QuantityMeasurementApp {
     }
 
 
+    // uc5: unit-to-unit conversion
+    // Converts a raw value between two units
+    public static void demonstrateLengthConversion(
+            double value,
+            Length.LengthUnit sourceUnit,
+            Length.LengthUnit targetUnit) {
+
+        double result = Length.convert(value, sourceUnit, targetUnit);
+
+        System.out.println(value + " " + sourceUnit + " = "
+                + result + " " + targetUnit);
+    }
+
+    // uc5: unit-to-unit conversion
+    // Converts an existing Length object into the target unit
+    public static void demonstrateLengthConversion(
+            Length length, Length.LengthUnit targetUnit) {
+
+        Length convertedLength = length.convertTo(targetUnit);
+
+        System.out.println("Converted measurement: " + convertedLength);
+    }
+
     // Main method
     public static void main(String[] args) {
 
-        // Feet and Inches comparison
-        demonstrateLengthEquality(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES)
-        );
+        // Static conversion examples
+        demonstrateLengthConversion(
+                1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
 
-        // Yards and Feet comparison
-        demonstrateLengthEquality(
-                new Length(1.0, Length.LengthUnit.YARDS),
-                new Length(3.0, Length.LengthUnit.FEET)
-        );
+        demonstrateLengthConversion(
+                3.0, Length.LengthUnit.YARDS, Length.LengthUnit.FEET);
 
-        // Yards and Inches comparison
-        demonstrateLengthEquality(
-                new Length(1.0, Length.LengthUnit.YARDS),
-                new Length(36.0, Length.LengthUnit.INCHES)
-        );
+        demonstrateLengthConversion(
+                36.0, Length.LengthUnit.INCHES, Length.LengthUnit.YARDS);
 
-        // Centimeters and Inches comparison
-        demonstrateLengthEquality(
-                new Length(1.0, Length.LengthUnit.CENTIMETERS),
-                new Length(0.393701, Length.LengthUnit.INCHES)
-        );
+        demonstrateLengthConversion(
+                1.0, Length.LengthUnit.CENTIMETERS, Length.LengthUnit.INCHES);
+
+        // Instance conversion example
+        Length length = new Length(5.0, Length.LengthUnit.FEET);
+
+        demonstrateLengthConversion(
+                length, Length.LengthUnit.INCHES);
     }
 
 }

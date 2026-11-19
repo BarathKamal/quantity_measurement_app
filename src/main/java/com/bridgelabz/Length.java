@@ -66,5 +66,41 @@ public class Length {
     public int hashCode() {
         return Double.hashCode(convertToBaseUnit());
     }
+
+    // uc5: unit-to-unit conversion
+    // Converts a value from source unit to target unit
+    public static double convert(double value, LengthUnit sourceUnit,
+                                 LengthUnit targetUnit) {
+
+        if (!Double.isFinite(value) || sourceUnit == null
+                || targetUnit == null) {
+            throw new IllegalArgumentException("Invalid conversion input");
+        }
+
+        double baseValue = value * sourceUnit.getConversionFactor();
+        double result = baseValue / targetUnit.getConversionFactor();
+
+        if (!Double.isFinite(result)) {
+            throw new IllegalArgumentException("Conversion result is out of range");
+        }
+
+        return result;
+    }
+
+    // uc5: unit-to-unit conversion
+    // Converts the current Length object into a new target unit object
+    public Length convertTo(LengthUnit targetUnit) {
+
+        double convertedValue = convert(this.value, this.unit, targetUnit);
+
+        return new Length(convertedValue, targetUnit);
+    }
+
+    // uc5: unit-to-unit conversion
+    // Returns a readable representation of the length measurement
+    @Override
+    public String toString() {
+        return value + " " + unit;
+    }
 }
 
