@@ -12,6 +12,10 @@ Compare two numerical values measured in feet and determine whether they are equ
 
 Extend the application to compare two Feet measurements and two Inches measurements independently using separate equality methods.
 
-####Use Case 3: Generic Quantity Class for DRY Principle
+#### Use Case 3: Generic Quantity Class for DRY Principle
 
 Refactor the separate Feet and Inches classes into a single generic Length class to eliminate code duplication and support equality comparisons across different units.
+
+#### Use Case 4: Extended Unit Support
+
+Extend the Length class to support Yards and Centimeters by adding their conversion factors, enabling equality comparisons across all four length units.
