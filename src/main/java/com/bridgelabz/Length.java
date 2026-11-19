@@ -105,30 +105,46 @@ public class Length {
 
 
     // uc6: addition of two length units
-    // Adds another Length object and returns the result in the current object's unit
+    // uc7: addition with target unit specification
+    // Adds another measurement and returns the result in the first operand's unit
     public Length add(Length other) {
+        return addAndConvert(other, this.unit);
+    }
+
+    // Adds another measurement and returns the result in the specified target unit
+    public Length add(Length other, LengthUnit targetUnit) {
+        return addAndConvert(other, targetUnit);
+    }
+
+    // Performs addition and converts the result into the requested unit
+    private Length addAndConvert(Length other, LengthUnit targetUnit) {
 
         if (other == null || this.unit == null || other.unit == null
+                || targetUnit == null
                 || !Double.isFinite(this.value)
                 || !Double.isFinite(other.value)) {
             throw new IllegalArgumentException("Invalid length measurements");
         }
 
-        // Convert both measurements into the base unit (inches)
+        // Convert both measurements into the base unit
         double firstValue = this.convertToBaseUnit();
         double secondValue = other.convertToBaseUnit();
 
-        // Add both converted measurements
+        // Add both measurements
         double sum = firstValue + secondValue;
 
         if (!Double.isFinite(sum)) {
             throw new IllegalArgumentException("Addition result is out of range");
         }
 
-        // Convert the sum back into the first operand's unit
-        double result = sum / this.unit.getConversionFactor();
+        // Convert the sum into the specified target unit
+        double result = sum / targetUnit.getConversionFactor();
 
-        return new Length(result, this.unit);
+        if (!Double.isFinite(result)) {
+            throw new IllegalArgumentException("Conversion result is out of range");
+        }
+
+        return new Length(result, targetUnit);
     }
 
 }

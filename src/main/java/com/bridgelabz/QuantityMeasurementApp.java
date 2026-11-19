@@ -47,49 +47,46 @@ public class QuantityMeasurementApp {
         return result;
     }
 
+    // uc7: addition with target unit specification
+    // Demonstrates addition with an explicitly specified result unit
+    public static Length demonstrateLengthAddition(
+            Length length1, Length length2,
+            Length.LengthUnit targetUnit) {
+
+        Length result = length1.add(length2, targetUnit);
+
+        System.out.println("Addition result: " + result);
+
+        return result;
+    }
+
     // Main method
     public static void main(String[] args) {
 
-        // Feet + Feet
-        demonstrateLengthAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(2.0, Length.LengthUnit.FEET)
-        );
+        Length length1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(12.0, Length.LengthUnit.INCHES);
 
-        // Feet + Inches
+        // Result in Feet
         demonstrateLengthAddition(
-                new Length(1.0, Length.LengthUnit.FEET),
-                new Length(12.0, Length.LengthUnit.INCHES)
-        );
+                length1, length2, Length.LengthUnit.FEET);
 
-        // Inches + Feet
+        // Result in Inches
         demonstrateLengthAddition(
-                new Length(12.0, Length.LengthUnit.INCHES),
-                new Length(1.0, Length.LengthUnit.FEET)
-        );
+                length1, length2, Length.LengthUnit.INCHES);
 
-        // Yards + Feet
+        // Result in Yards
+        demonstrateLengthAddition(
+                length1, length2, Length.LengthUnit.YARDS);
+
+        // Result in Centimeters
+        demonstrateLengthAddition(
+                length1, length2, Length.LengthUnit.CENTIMETERS);
+
+        // Different operand units and target unit
         demonstrateLengthAddition(
                 new Length(1.0, Length.LengthUnit.YARDS),
-                new Length(3.0, Length.LengthUnit.FEET)
-        );
-
-        // Centimeters + Inches
-        demonstrateLengthAddition(
-                new Length(2.54, Length.LengthUnit.CENTIMETERS),
-                new Length(1.0, Length.LengthUnit.INCHES)
-        );
-
-        // Feet + Zero
-        demonstrateLengthAddition(
-                new Length(5.0, Length.LengthUnit.FEET),
-                new Length(0.0, Length.LengthUnit.INCHES)
-        );
-
-        // Feet + Negative Feet
-        demonstrateLengthAddition(
-                new Length(5.0, Length.LengthUnit.FEET),
-                new Length(-2.0, Length.LengthUnit.FEET)
-        );
+                new Length(3.0, Length.LengthUnit.FEET),
+                Length.LengthUnit.INCHES);
     }
+
 }
