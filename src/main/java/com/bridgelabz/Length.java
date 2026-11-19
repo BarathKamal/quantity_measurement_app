@@ -102,5 +102,34 @@ public class Length {
     public String toString() {
         return value + " " + unit;
     }
+
+
+    // uc6: addition of two length units
+    // Adds another Length object and returns the result in the current object's unit
+    public Length add(Length other) {
+
+        if (other == null || this.unit == null || other.unit == null
+                || !Double.isFinite(this.value)
+                || !Double.isFinite(other.value)) {
+            throw new IllegalArgumentException("Invalid length measurements");
+        }
+
+        // Convert both measurements into the base unit (inches)
+        double firstValue = this.convertToBaseUnit();
+        double secondValue = other.convertToBaseUnit();
+
+        // Add both converted measurements
+        double sum = firstValue + secondValue;
+
+        if (!Double.isFinite(sum)) {
+            throw new IllegalArgumentException("Addition result is out of range");
+        }
+
+        // Convert the sum back into the first operand's unit
+        double result = sum / this.unit.getConversionFactor();
+
+        return new Length(result, this.unit);
+    }
+
 }
 

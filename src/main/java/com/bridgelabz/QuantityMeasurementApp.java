@@ -35,27 +35,61 @@ public class QuantityMeasurementApp {
         System.out.println("Converted measurement: " + convertedLength);
     }
 
+    // uc6: addition of two length units
+    // Demonstrates addition of two Length measurements
+    public static Length demonstrateLengthAddition(
+            Length length1, Length length2) {
+
+        Length result = length1.add(length2);
+
+        System.out.println("Addition result: " + result);
+
+        return result;
+    }
+
     // Main method
     public static void main(String[] args) {
 
-        // Static conversion examples
-        demonstrateLengthConversion(
-                1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
+        // Feet + Feet
+        demonstrateLengthAddition(
+                new Length(1.0, Length.LengthUnit.FEET),
+                new Length(2.0, Length.LengthUnit.FEET)
+        );
 
-        demonstrateLengthConversion(
-                3.0, Length.LengthUnit.YARDS, Length.LengthUnit.FEET);
+        // Feet + Inches
+        demonstrateLengthAddition(
+                new Length(1.0, Length.LengthUnit.FEET),
+                new Length(12.0, Length.LengthUnit.INCHES)
+        );
 
-        demonstrateLengthConversion(
-                36.0, Length.LengthUnit.INCHES, Length.LengthUnit.YARDS);
+        // Inches + Feet
+        demonstrateLengthAddition(
+                new Length(12.0, Length.LengthUnit.INCHES),
+                new Length(1.0, Length.LengthUnit.FEET)
+        );
 
-        demonstrateLengthConversion(
-                1.0, Length.LengthUnit.CENTIMETERS, Length.LengthUnit.INCHES);
+        // Yards + Feet
+        demonstrateLengthAddition(
+                new Length(1.0, Length.LengthUnit.YARDS),
+                new Length(3.0, Length.LengthUnit.FEET)
+        );
 
-        // Instance conversion example
-        Length length = new Length(5.0, Length.LengthUnit.FEET);
+        // Centimeters + Inches
+        demonstrateLengthAddition(
+                new Length(2.54, Length.LengthUnit.CENTIMETERS),
+                new Length(1.0, Length.LengthUnit.INCHES)
+        );
 
-        demonstrateLengthConversion(
-                length, Length.LengthUnit.INCHES);
+        // Feet + Zero
+        demonstrateLengthAddition(
+                new Length(5.0, Length.LengthUnit.FEET),
+                new Length(0.0, Length.LengthUnit.INCHES)
+        );
+
+        // Feet + Negative Feet
+        demonstrateLengthAddition(
+                new Length(5.0, Length.LengthUnit.FEET),
+                new Length(-2.0, Length.LengthUnit.FEET)
+        );
     }
-
 }
