@@ -24,3 +24,6 @@ Extend the Length class to support Yards and Centimeters by adding their convers
 
 Implement conversion operations between Feet, Inches, Yards, and Centimeters using centralized conversion factors, supporting both static and instance-based conversion methods.
 
+#### Use Case 6: Addition of Two Length Units (Same Category)
+
+Extend the application to perform addition between two length measurements, including different units, returning the result in the unit of the first operand.
