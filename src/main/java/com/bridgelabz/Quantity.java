@@ -74,6 +74,74 @@ public class Quantity<U extends IMeasurable> {
         return new Quantity<>(result, targetUnit);
     }
 
+    // uc12: subtraction and division operations
+    // Subtracts another quantity and returns the result in the current unit
+    public Quantity<U> subtract(Quantity<U> other) {
+        return subtract(other, this.unit);
+    }
+
+    // Subtracts another quantity and returns the result in the specified target unit
+    public Quantity<U> subtract(Quantity<U> other, U targetUnit) {
+
+        if (other == null || targetUnit == null
+                || this.unit.getClass() != other.unit.getClass()
+                || this.unit.getClass() != targetUnit.getClass()) {
+            throw new IllegalArgumentException("Incompatible quantities");
+        }
+
+        if (!Double.isFinite(this.value)
+                || !Double.isFinite(other.value)) {
+            throw new IllegalArgumentException("Invalid quantity values");
+        }
+
+        // Convert both quantities into the base unit
+        double firstValue = this.convertToBaseUnit();
+        double secondValue = other.convertToBaseUnit();
+
+        // Subtract the converted values
+        double difference = firstValue - secondValue;
+
+        if (!Double.isFinite(difference)) {
+            throw new IllegalArgumentException("Subtraction result is out of range");
+        }
+
+        // Convert the difference into the target unit
+        double result = targetUnit.convertFromBaseUnit(difference);
+
+        // Round the result to two decimal places
+        result = Math.round(result * 100.0) / 100.0;
+
+        return new Quantity<>(result, targetUnit);
+    }
+
+
+    // uc12: subtraction and division operations
+    // Divides another quantity and returns a dimensionless ratio
+    public double divide(Quantity<U> other) {
+
+        if (other == null
+                || this.unit.getClass() != other.unit.getClass()) {
+            throw new IllegalArgumentException("Incompatible quantities");
+        }
+
+        if (!Double.isFinite(this.value)
+                || !Double.isFinite(other.value)) {
+            throw new IllegalArgumentException("Invalid quantity values");
+        }
+
+        // Convert both quantities into the base unit
+        double firstValue = this.convertToBaseUnit();
+        double secondValue = other.convertToBaseUnit();
+
+        // Prevent division by zero
+        if (secondValue == 0.0) {
+            throw new ArithmeticException("Division by zero is not allowed");
+        }
+
+        // Return the dimensionless ratio
+        return firstValue / secondValue;
+    }
+
     // Compares two quantities after converting them into their base units
     @Override
     public boolean equals(Object obj) {

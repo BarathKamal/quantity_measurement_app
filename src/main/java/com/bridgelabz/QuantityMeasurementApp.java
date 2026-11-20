@@ -34,46 +34,99 @@ public class QuantityMeasurementApp {
         return quantity1.add(quantity2, targetUnit);
     }
 
+
+    // uc12: subtraction and division operations
+    // Demonstrates subtraction with the first operand's unit
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateSubtraction(Quantity<U> quantity1, Quantity<U> quantity2) {
+
+        return quantity1.subtract(quantity2);
+    }
+
+    // Demonstrates subtraction with an explicitly specified target unit
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateSubtraction(
+            Quantity<U> quantity1,
+            Quantity<U> quantity2,
+            U targetUnit) {
+
+        return quantity1.subtract(quantity2, targetUnit);
+    }
+
+
+    // uc12: subtraction and division operations
+    // Demonstrates division between two quantities
+    public static <U extends IMeasurable> double
+    demonstrateDivision(Quantity<U> quantity1, Quantity<U> quantity2) {
+
+        return quantity1.divide(quantity2);
+    }
+
     // Main method
     // uc10: generic quantity class with unit interface
     public static void main(String[] args) {
+        // uc12: subtraction and division operations
 
-        // uc11: volume measurement equality, conversion, and addition
+        // SUBTRACTION OPERATIONS
 
-        // Volume measurements
-        Quantity<VolumeUnit> volume1 =
-                new Quantity<>(1.0, VolumeUnit.LITRE);
+        // Feet - Inches (implicit target unit)
+        Quantity<LengthUnit> subtraction1 =
+                new Quantity<>(10.0, LengthUnit.FEET);
 
-        Quantity<VolumeUnit> volume2 =
-                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<LengthUnit> subtraction2 =
+                new Quantity<>(6.0, LengthUnit.INCHES);
 
-        Quantity<VolumeUnit> volume3 =
-                new Quantity<>(1.0, VolumeUnit.GALLON);
+        System.out.println("Subtraction (Feet): "
+                + demonstrateSubtraction(subtraction1, subtraction2));
 
-        // Volume equality
-        System.out.println("Volume equality: "
-                + demonstrateEquality(volume1, volume2));
+        // Feet - Inches (explicit target unit)
+        System.out.println("Subtraction (Inches): "
+                + demonstrateSubtraction(
+                subtraction1, subtraction2, LengthUnit.INCHES));
 
-        // Cross-unit volume equality
-        System.out.println("Litre and Gallon equality: "
-                + demonstrateEquality(
-                volume1,
-                new Quantity<>(0.264172, VolumeUnit.GALLON)));
+        // Subtraction resulting in a negative value
+        System.out.println("Negative subtraction: "
+                + demonstrateSubtraction(
+                new Quantity<>(5.0, LengthUnit.FEET),
+                new Quantity<>(10.0, LengthUnit.FEET)));
 
-        // Volume conversion
-        System.out.println("Volume conversion: "
-                + demonstrateConversion(
-                volume1, VolumeUnit.MILLILITRE));
+        // Weight subtraction
+        System.out.println("Weight subtraction: "
+                + demonstrateSubtraction(
+                new Quantity<>(10.0, WeightUnit.KILOGRAM),
+                new Quantity<>(5000.0, WeightUnit.GRAM)));
 
-        // Addition with implicit target unit
-        System.out.println("Volume addition: "
-                + demonstrateAddition(volume1, volume2));
+        // Volume subtraction
+        System.out.println("Volume subtraction: "
+                + demonstrateSubtraction(
+                new Quantity<>(5.0, VolumeUnit.LITRE),
+                new Quantity<>(500.0, VolumeUnit.MILLILITRE)));
 
-        // Addition with explicit target unit
-        System.out.println("Volume addition in Gallons: "
-                + demonstrateAddition(
-                volume1, volume2, VolumeUnit.GALLON));
 
+        // DIVISION OPERATIONS
+
+        // Same-unit division
+        System.out.println("Feet division: "
+                + demonstrateDivision(
+                new Quantity<>(10.0, LengthUnit.FEET),
+                new Quantity<>(2.0, LengthUnit.FEET)));
+
+        // Different-unit division
+        System.out.println("Cross-unit division: "
+                + demonstrateDivision(
+                new Quantity<>(24.0, LengthUnit.INCHES),
+                new Quantity<>(2.0, LengthUnit.FEET)));
+
+        // Weight division
+        System.out.println("Weight division: "
+                + demonstrateDivision(
+                new Quantity<>(2000.0, WeightUnit.GRAM),
+                new Quantity<>(1.0, WeightUnit.KILOGRAM)));
+
+        // Volume division
+        System.out.println("Volume division: "
+                + demonstrateDivision(
+                new Quantity<>(5.0, VolumeUnit.LITRE),
+                new Quantity<>(10.0, VolumeUnit.LITRE)));
     }
-
 }
