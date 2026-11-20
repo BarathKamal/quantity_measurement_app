@@ -38,57 +38,42 @@ public class QuantityMeasurementApp {
     // uc10: generic quantity class with unit interface
     public static void main(String[] args) {
 
-        // LENGTH OPERATIONS
+        // uc11: volume measurement equality, conversion, and addition
 
-        Quantity<LengthUnit> lengthInFeet =
-                new Quantity<>(1.0, LengthUnit.FEET);
+        // Volume measurements
+        Quantity<VolumeUnit> volume1 =
+                new Quantity<>(1.0, VolumeUnit.LITRE);
 
-        Quantity<LengthUnit> lengthInInches =
-                new Quantity<>(12.0, LengthUnit.INCHES);
+        Quantity<VolumeUnit> volume2 =
+                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 
-        // Length equality
-        System.out.println("Length equality: "
-                + demonstrateEquality(lengthInFeet, lengthInInches));
+        Quantity<VolumeUnit> volume3 =
+                new Quantity<>(1.0, VolumeUnit.GALLON);
 
-        // Length conversion
-        System.out.println("Length conversion: "
+        // Volume equality
+        System.out.println("Volume equality: "
+                + demonstrateEquality(volume1, volume2));
+
+        // Cross-unit volume equality
+        System.out.println("Litre and Gallon equality: "
+                + demonstrateEquality(
+                volume1,
+                new Quantity<>(0.264172, VolumeUnit.GALLON)));
+
+        // Volume conversion
+        System.out.println("Volume conversion: "
                 + demonstrateConversion(
-                lengthInFeet, LengthUnit.INCHES));
+                volume1, VolumeUnit.MILLILITRE));
 
-        // Length addition
-        System.out.println("Length addition: "
+        // Addition with implicit target unit
+        System.out.println("Volume addition: "
+                + demonstrateAddition(volume1, volume2));
+
+        // Addition with explicit target unit
+        System.out.println("Volume addition in Gallons: "
                 + demonstrateAddition(
-                lengthInFeet, lengthInInches, LengthUnit.FEET));
+                volume1, volume2, VolumeUnit.GALLON));
 
-
-        // WEIGHT OPERATIONS
-
-        Quantity<WeightUnit> weightInKg =
-                new Quantity<>(1.0, WeightUnit.KILOGRAM);
-
-        Quantity<WeightUnit> weightInGrams =
-                new Quantity<>(1000.0, WeightUnit.GRAM);
-
-        // Weight equality
-        System.out.println("Weight equality: "
-                + demonstrateEquality(weightInKg, weightInGrams));
-
-        // Weight conversion
-        System.out.println("Weight conversion: "
-                + demonstrateConversion(
-                weightInKg, WeightUnit.GRAM));
-
-        // Weight addition
-        System.out.println("Weight addition: "
-                + demonstrateAddition(
-                weightInKg, weightInGrams, WeightUnit.KILOGRAM));
-
-
-        // CROSS-CATEGORY COMPARISON
-
-        System.out.println("Cross-category equality: "
-                + demonstrateEquality(lengthInFeet, weightInKg));
     }
-
 
 }

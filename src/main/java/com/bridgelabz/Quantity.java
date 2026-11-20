@@ -45,9 +45,6 @@ public class Quantity<U extends IMeasurable> {
 
         double result = targetUnit.convertFromBaseUnit(baseValue);
 
-        // Round the converted result to two decimal places
-        result = Math.round(result * 100.0) / 100.0;
-
         return new Quantity<>(result, targetUnit);
     }
 
@@ -95,10 +92,9 @@ public class Quantity<U extends IMeasurable> {
             return false;
         }
 
-        return Double.compare(
-                this.convertToBaseUnit(),
-                other.convertToBaseUnit()
-        ) == 0;
+        // uc11: volume measurement equality, conversion, and addition
+        return Math.abs(this.convertToBaseUnit()
+                - other.convertToBaseUnit()) <= 1e-5;
     }
 
     // Generates a hash code based on the base unit value
