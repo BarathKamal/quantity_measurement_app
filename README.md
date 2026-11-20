@@ -39,3 +39,7 @@ Refactor the LengthUnit enum into a standalone class and delegate unit conversio
 #### Use Case 9: Weight Measurement Equality, Conversion, and Addition (Kilogram, Gram, Pound)
 
 Extend the Quantity Measurement App to support weight measurements by implementing equality comparison, unit conversion, and addition across Kilogram, Gram, and Pound while keeping weight and length categories independent.
+
+#### Use Case 10: Generic Quantity Class with Unit Interface for Multi-Category Support
+
+Refactor the application using a generic Quantity class and IMeasurable interface to eliminate code duplication, maintain type safety, and support multiple measurement categories through a unified implementation.
