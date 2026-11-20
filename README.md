@@ -43,3 +43,7 @@ Extend the Quantity Measurement App to support weight measurements by implementi
 #### Use Case 10: Generic Quantity Class with Unit Interface for Multi-Category Support
 
 Refactor the application using a generic Quantity class and IMeasurable interface to eliminate code duplication, maintain type safety, and support multiple measurement categories through a unified implementation.
+
+#### Use Case 11: Volume Measurement Equality, Conversion, and Addition (Litre, Millilitre, Gallon)
+
+Extend the Quantity Measurement App to support volume measurements by implementing equality comparison, unit conversion, and addition across Litre, Millilitre, and Gallon using the existing generic Quantity class and IMeasurable interface.
