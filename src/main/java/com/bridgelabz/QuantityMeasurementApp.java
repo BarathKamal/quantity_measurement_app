@@ -2,133 +2,93 @@ package com.bridgelabz;
 
 public class QuantityMeasurementApp {
 
-    // uc3: generic quantity class for dry principle
-    // Compares two Length measurements
-    public static void demonstrateLengthEquality(
-            Length length1, Length length2) {
+    // uc10: generic quantity class with unit interface
+    // Demonstrates equality comparison between two quantities
+    public static boolean demonstrateEquality(
+            Quantity<?> quantity1, Quantity<?> quantity2) {
 
-        System.out.println("Are both lengths equal? "
-                + length1.equals(length2));
+        return quantity1.equals(quantity2);
     }
 
-    // uc5: unit-to-unit conversion
-    // Converts a raw value between two units
-    public static void demonstrateLengthConversion(
-            double value,
-            LengthUnit sourceUnit,
-            LengthUnit targetUnit) {
+    // Demonstrates conversion of a quantity into a target unit
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateConversion(Quantity<U> quantity, U targetUnit) {
 
-        double result = Length.convert(value, sourceUnit, targetUnit);
-
-        System.out.println(value + " " + sourceUnit + " = "
-                + result + " " + targetUnit);
+        return quantity.convertTo(targetUnit);
     }
 
-    // uc5: unit-to-unit conversion
-    // Converts an existing Length object into the target unit
-    public static void demonstrateLengthConversion(
-            Length length, LengthUnit targetUnit) {
+    // Demonstrates addition with the result in the first quantity's unit
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateAddition(Quantity<U> quantity1, Quantity<U> quantity2) {
 
-        Length convertedLength = length.convertTo(targetUnit);
-
-        System.out.println("Converted measurement: " + convertedLength);
+        return quantity1.add(quantity2);
     }
 
-    // uc6: addition of two length units
-    // Demonstrates addition of two Length measurements
-    public static Length demonstrateLengthAddition(
-            Length length1, Length length2) {
+    // Demonstrates addition with a specified target unit
+    public static <U extends IMeasurable> Quantity<U>
+    demonstrateAddition(
+            Quantity<U> quantity1,
+            Quantity<U> quantity2,
+            U targetUnit) {
 
-        Length result = length1.add(length2);
-
-        System.out.println("Addition result: " + result);
-
-        return result;
-    }
-
-    // uc7: addition with target unit specification
-    // Demonstrates addition with an explicitly specified result unit
-    public static Length demonstrateLengthAddition(
-            Length length1, Length length2,
-            LengthUnit targetUnit) {
-
-        Length result = length1.add(length2, targetUnit);
-
-        System.out.println("Addition result: " + result);
-
-        return result;
-    }
-
-    // uc9: weight measurement equality, conversion, and addition
-    // Compares two weight measurements for equality
-    public static boolean demonstrateWeightEquality(
-            QuantityWeight weight1, QuantityWeight weight2) {
-
-        return weight1.equals(weight2);
-    }
-
-    // Demonstrates conversion between two weight units
-    public static QuantityWeight demonstrateWeightConversion(
-            double value, WeightUnit fromUnit, WeightUnit toUnit) {
-
-        QuantityWeight weight = new QuantityWeight(value, fromUnit);
-        return weight.convertTo(toUnit);
-    }
-
-    // Converts an existing weight object into the target unit
-    public static QuantityWeight demonstrateWeightConversion(
-            QuantityWeight weight, WeightUnit targetUnit) {
-
-        return weight.convertTo(targetUnit);
-    }
-
-    // Adds two weights and returns the result in the first operand's unit
-    public static QuantityWeight demonstrateWeightAddition(
-            QuantityWeight weight1, QuantityWeight weight2) {
-
-        return weight1.add(weight2);
-    }
-
-    // Adds two weights and returns the result in the specified target unit
-    public static QuantityWeight demonstrateWeightAddition(
-            QuantityWeight weight1, QuantityWeight weight2,
-            WeightUnit targetUnit) {
-
-        return weight1.add(weight2, targetUnit);
+        return quantity1.add(quantity2, targetUnit);
     }
 
     // Main method
+    // uc10: generic quantity class with unit interface
     public static void main(String[] args) {
 
+        // LENGTH OPERATIONS
+
+        Quantity<LengthUnit> lengthInFeet =
+                new Quantity<>(1.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> lengthInInches =
+                new Quantity<>(12.0, LengthUnit.INCHES);
+
+        // Length equality
+        System.out.println("Length equality: "
+                + demonstrateEquality(lengthInFeet, lengthInInches));
+
+        // Length conversion
+        System.out.println("Length conversion: "
+                + demonstrateConversion(
+                lengthInFeet, LengthUnit.INCHES));
+
+        // Length addition
+        System.out.println("Length addition: "
+                + demonstrateAddition(
+                lengthInFeet, lengthInInches, LengthUnit.FEET));
+
+
+        // WEIGHT OPERATIONS
+
+        Quantity<WeightUnit> weightInKg =
+                new Quantity<>(1.0, WeightUnit.KILOGRAM);
+
+        Quantity<WeightUnit> weightInGrams =
+                new Quantity<>(1000.0, WeightUnit.GRAM);
+
         // Weight equality
-        QuantityWeight weight1 =
-                new QuantityWeight(1.0, WeightUnit.KILOGRAM);
-
-        QuantityWeight weight2 =
-                new QuantityWeight(1000.0, WeightUnit.GRAM);
-
         System.out.println("Weight equality: "
-                + demonstrateWeightEquality(weight1, weight2));
+                + demonstrateEquality(weightInKg, weightInGrams));
 
         // Weight conversion
         System.out.println("Weight conversion: "
-                + demonstrateWeightConversion(
-                2.0, WeightUnit.POUND, WeightUnit.KILOGRAM));
+                + demonstrateConversion(
+                weightInKg, WeightUnit.GRAM));
 
-        // Addition with implicit target unit
-        QuantityWeight weight3 =
-                new QuantityWeight(1.0, WeightUnit.KILOGRAM);
-
-        QuantityWeight weight4 =
-                new QuantityWeight(1000.0, WeightUnit.GRAM);
-
+        // Weight addition
         System.out.println("Weight addition: "
-                + demonstrateWeightAddition(weight3, weight4));
+                + demonstrateAddition(
+                weightInKg, weightInGrams, WeightUnit.KILOGRAM));
 
-        // Addition with explicit target unit
-        System.out.println("Weight addition with target unit: "
-                + demonstrateWeightAddition(
-                weight3, weight4, WeightUnit.GRAM));
+
+        // CROSS-CATEGORY COMPARISON
+
+        System.out.println("Cross-category equality: "
+                + demonstrateEquality(lengthInFeet, weightInKg));
     }
+
 
 }

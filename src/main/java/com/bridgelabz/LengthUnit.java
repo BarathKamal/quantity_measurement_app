@@ -1,33 +1,41 @@
 package com.bridgelabz;
 
-// uc8: refactoring unit enum to standalone class
-public enum LengthUnit {
+// uc10: generic quantity class with unit interface
+public enum LengthUnit implements IMeasurable {
 
-    FEET(1.0),
-    INCHES(1.0 / 12.0),
-    YARDS(3.0),
-    CENTIMETERS(1.0 / 30.48);
+    FEET(12.0),
+    INCHES(1.0),
+    YARDS(36.0),
+    CENTIMETERS(0.393701);
 
     private final double conversionFactor;
 
-    // Initializes the conversion factor relative to feet
+    // Initializes the conversion factor relative to inches
     LengthUnit(double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
 
     // Returns the conversion factor
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
 
-    // Converts a value in the current unit into feet
+    // Converts the value into inches
+    @Override
     public double convertToBaseUnit(double value) {
         return value * conversionFactor;
     }
 
-    // Converts a value in feet into the current unit
+    // Converts inches into the current unit
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
     }
-}
 
+    // Returns the unit name
+    @Override
+    public String getUnitName() {
+        return name();
+    }
+}

@@ -1,32 +1,42 @@
 package com.bridgelabz;
 
-// uc9: weight measurement equality, conversion, and addition
+// uc10: generic quantity class with unit interface
+public enum WeightUnit implements IMeasurable {
 
-public enum WeightUnit {
-
-    KILOGRAM(1.0),
-    GRAM(0.001),
-    POUND(0.453592);
+    MILLIGRAM(0.001),
+    GRAM(1.0),
+    KILOGRAM(1000.0),
+    POUND(453.592),
+    TONNE(1000000.0);
 
     private final double conversionFactor;
 
-    // Initializes the conversion factor relative to kilograms
+    // Initializes the conversion factor relative to grams
     WeightUnit(double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
 
     // Returns the conversion factor
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
 
-    // Converts the current unit value into kilograms
+    // Converts the value into grams
+    @Override
     public double convertToBaseUnit(double value) {
         return value * conversionFactor;
     }
 
-    // Converts kilograms into the current unit
+    // Converts grams into the current unit
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
+    }
+
+    // Returns the unit name
+    @Override
+    public String getUnitName() {
+        return name();
     }
 }
