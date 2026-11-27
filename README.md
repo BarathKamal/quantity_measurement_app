@@ -55,3 +55,7 @@ Extend the generic Quantity class to support subtraction and division across Len
 #### Use Case 13: Centralized Arithmetic Logic to Enforce DRY in Quantity Operations
 
 Refactor addition, subtraction, and division operations by introducing centralized validation and arithmetic helper methods, eliminating code duplication while preserving existing functionality and public method signatures.
+
+#### Use Case 14: Temperature Measurement with Selective Arithmetic Support and IMeasurable Refactoring
+
+Extend the Quantity Measurement App to support Celsius, Fahrenheit, and Kelvin conversions while refactoring IMeasurable to provide selective arithmetic support, preventing unsupported operations on temperature measurements.
