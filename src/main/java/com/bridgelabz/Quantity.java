@@ -1,5 +1,7 @@
 package com.bridgelabz;
 
+import java.util.function.DoubleBinaryOperator;
+
 // uc10: generic quantity class with unit interface
 
 public class Quantity<U extends IMeasurable> {
@@ -28,6 +30,34 @@ public class Quantity<U extends IMeasurable> {
         return unit;
     }
 
+    // uc13: centralized arithmetic logic to enforce DRY
+    // Defines arithmetic operations using lambda expressions
+    private enum ArithmeticOperation {
+
+        ADD((a, b) -> a + b),
+
+        SUBTRACT((a, b) -> a - b),
+
+        DIVIDE((a, b) -> {
+            if (b == 0.0) {
+                throw new ArithmeticException("Cannot divide by zero");
+            }
+            return a / b;
+        });
+
+        private final DoubleBinaryOperator operation;
+
+        // Initializes the arithmetic operation
+        ArithmeticOperation(DoubleBinaryOperator operation) {
+            this.operation = operation;
+        }
+
+        // Executes the selected arithmetic operation
+        public double compute(double a, double b) {
+            return operation.applyAsDouble(a, b);
+        }
+    }
+
     // Converts the current quantity into its base unit
     private double convertToBaseUnit() {
         return unit.convertToBaseUnit(value);
@@ -50,96 +80,56 @@ public class Quantity<U extends IMeasurable> {
 
     // Adds another quantity and returns the result in the first operand's unit
     public Quantity<U> add(Quantity<U> other) {
-        return add(other, this.unit);
+        return add(other, unit);
     }
 
-    // Adds another quantity and returns the result in the specified target unit
+
+    // uc13: centralized arithmetic logic to enforce DRY
+    // Adds another quantity and returns the result in the specified unit
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
 
-        if (other == null || targetUnit == null
-                || this.unit.getClass() != other.unit.getClass()
-                || this.unit.getClass() != targetUnit.getClass()) {
-            throw new IllegalArgumentException("Incompatible quantities");
-        }
+        validateArithmeticOperands(other, targetUnit, true);
 
-        double sum = this.convertToBaseUnit()
-                + other.convertToBaseUnit();
+        double result = performBaseArithmetic(
+                other, ArithmeticOperation.ADD);
 
-        if (!Double.isFinite(sum)) {
-            throw new IllegalArgumentException("Addition result is out of range");
-        }
+        double convertedResult =
+                targetUnit.convertFromBaseUnit(result);
 
-        double result = targetUnit.convertFromBaseUnit(sum);
-
-        return new Quantity<>(result, targetUnit);
+        return new Quantity<>(
+                roundToTwoDecimals(convertedResult), targetUnit);
     }
 
     // uc12: subtraction and division operations
     // Subtracts another quantity and returns the result in the current unit
     public Quantity<U> subtract(Quantity<U> other) {
-        return subtract(other, this.unit);
+        return subtract(other, unit);
     }
 
-    // Subtracts another quantity and returns the result in the specified target unit
+    // uc13: centralized arithmetic logic to enforce DRY
+    // Subtracts another quantity and returns the result in the specified unit
     public Quantity<U> subtract(Quantity<U> other, U targetUnit) {
 
-        if (other == null || targetUnit == null
-                || this.unit.getClass() != other.unit.getClass()
-                || this.unit.getClass() != targetUnit.getClass()) {
-            throw new IllegalArgumentException("Incompatible quantities");
-        }
+        validateArithmeticOperands(other, targetUnit, true);
 
-        if (!Double.isFinite(this.value)
-                || !Double.isFinite(other.value)) {
-            throw new IllegalArgumentException("Invalid quantity values");
-        }
+        double result = performBaseArithmetic(
+                other, ArithmeticOperation.SUBTRACT);
 
-        // Convert both quantities into the base unit
-        double firstValue = this.convertToBaseUnit();
-        double secondValue = other.convertToBaseUnit();
+        double convertedResult =
+                targetUnit.convertFromBaseUnit(result);
 
-        // Subtract the converted values
-        double difference = firstValue - secondValue;
-
-        if (!Double.isFinite(difference)) {
-            throw new IllegalArgumentException("Subtraction result is out of range");
-        }
-
-        // Convert the difference into the target unit
-        double result = targetUnit.convertFromBaseUnit(difference);
-
-        // Round the result to two decimal places
-        result = Math.round(result * 100.0) / 100.0;
-
-        return new Quantity<>(result, targetUnit);
+        return new Quantity<>(
+                roundToTwoDecimals(convertedResult), targetUnit);
     }
 
-
-    // uc12: subtraction and division operations
+    // uc13: centralized arithmetic logic to enforce DRY
     // Divides another quantity and returns a dimensionless ratio
     public double divide(Quantity<U> other) {
 
-        if (other == null
-                || this.unit.getClass() != other.unit.getClass()) {
-            throw new IllegalArgumentException("Incompatible quantities");
-        }
+        validateArithmeticOperands(other, null, false);
 
-        if (!Double.isFinite(this.value)
-                || !Double.isFinite(other.value)) {
-            throw new IllegalArgumentException("Invalid quantity values");
-        }
-
-        // Convert both quantities into the base unit
-        double firstValue = this.convertToBaseUnit();
-        double secondValue = other.convertToBaseUnit();
-
-        // Prevent division by zero
-        if (secondValue == 0.0) {
-            throw new ArithmeticException("Division by zero is not allowed");
-        }
-
-        // Return the dimensionless ratio
-        return firstValue / secondValue;
+        return performBaseArithmetic(
+                other, ArithmeticOperation.DIVIDE);
     }
 
     // Compares two quantities after converting them into their base units
@@ -175,5 +165,64 @@ public class Quantity<U extends IMeasurable> {
     @Override
     public String toString() {
         return "Quantity(" + value + ", " + unit.getUnitName() + ")";
+    }
+
+    // uc13: centralized arithmetic logic to enforce DRY
+    // Validates operands and target unit for arithmetic operations
+    private void validateArithmeticOperands(
+            Quantity<U> other,
+            U targetUnit,
+            boolean targetUnitRequired) {
+
+        if (other == null) {
+            throw new IllegalArgumentException(
+                    "Quantity operand cannot be null");
+        }
+
+        if (unit == null || other.unit == null
+                || unit.getClass() != other.unit.getClass()) {
+            throw new IllegalArgumentException(
+                    "Incompatible measurement categories");
+        }
+
+        if (!Double.isFinite(value)
+                || !Double.isFinite(other.value)) {
+            throw new IllegalArgumentException(
+                    "Quantity values must be finite");
+        }
+
+        if (targetUnitRequired) {
+            if (targetUnit == null
+                    || unit.getClass() != targetUnit.getClass()) {
+                throw new IllegalArgumentException(
+                        "Invalid target unit");
+            }
+        }
+    }
+
+    // Converts operands to base units and performs the requested operation
+    private double performBaseArithmetic(
+            Quantity<U> other,
+            ArithmeticOperation operation) {
+
+        double firstBase =
+                unit.convertToBaseUnit(value);
+
+        double secondBase =
+                other.unit.convertToBaseUnit(other.value);
+
+        double result = operation.compute(firstBase, secondBase);
+
+        if (!Double.isFinite(result)) {
+            throw new IllegalArgumentException(
+                    "Arithmetic result is out of range");
+        }
+
+        return result;
+    }
+
+    // Rounds arithmetic results to two decimal places
+    private double roundToTwoDecimals(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 }
