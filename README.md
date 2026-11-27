@@ -51,3 +51,7 @@ Extend the Quantity Measurement App to support volume measurements by implementi
 #### Use Case 12: Subtraction and Division Operations on Quantity Measurements
 
 Extend the generic Quantity class to support subtraction and division across Length, Weight, and Volume measurements, including cross-unit arithmetic, target unit specification, and appropriate error handling.
+
+#### Use Case 13: Centralized Arithmetic Logic to Enforce DRY in Quantity Operations
+
+Refactor addition, subtraction, and division operations by introducing centralized validation and arithmetic helper methods, eliminating code duplication while preserving existing functionality and public method signatures.
