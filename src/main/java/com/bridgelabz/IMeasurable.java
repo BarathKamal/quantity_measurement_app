@@ -14,5 +14,20 @@ public interface IMeasurable {
 
     // Returns the readable unit name
     String getUnitName();
+
+    // uc14: temperature measurement with selective arithmetic support and IMeasurable refactoring
+    // Allows measurable units to define arithmetic support
+    SupportsArithmetic supportsArithmetic = () -> true;
+
+    // Checks whether arithmetic operations are supported
+    default boolean supportsArithmetic() {
+        return supportsArithmetic.isSupported();
+    }
+
+    // Validates whether the requested arithmetic operation is supported
+    default void validateOperationSupport(String operation) {
+        // Existing measurement categories support arithmetic by default
+    }
+
 }
 

@@ -63,6 +63,7 @@ public class Quantity<U extends IMeasurable> {
         return unit.convertToBaseUnit(value);
     }
 
+    // uc14: temperature measurement with selective arithmetic support and IMeasurable refactoring
     // Converts the quantity into the specified target unit
     public Quantity<U> convertTo(U targetUnit) {
 
@@ -71,6 +72,21 @@ public class Quantity<U extends IMeasurable> {
             throw new IllegalArgumentException("Incompatible units");
         }
 
+        // Special handling for nonlinear temperature conversion
+        if (unit instanceof TemperatureUnit) {
+
+            TemperatureUnit source =
+                    (TemperatureUnit) unit;
+
+            TemperatureUnit target =
+                    (TemperatureUnit) targetUnit;
+
+            double result = source.convertTo(value, target);
+
+            return new Quantity<>(result, targetUnit);
+        }
+
+        // Existing conversion logic for Length, Weight and Volume
         double baseValue = convertToBaseUnit();
 
         double result = targetUnit.convertFromBaseUnit(baseValue);
@@ -82,7 +98,6 @@ public class Quantity<U extends IMeasurable> {
     public Quantity<U> add(Quantity<U> other) {
         return add(other, unit);
     }
-
 
     // uc13: centralized arithmetic logic to enforce DRY
     // Adds another quantity and returns the result in the specified unit
@@ -155,10 +170,11 @@ public class Quantity<U extends IMeasurable> {
                 - other.convertToBaseUnit()) <= 1e-5;
     }
 
-    // Generates a hash code based on the base unit value
+    // uc14: temperature measurement with selective arithmetic support and IMeasurable refactoring
+    // Generates a hash code based on the measurement category
     @Override
     public int hashCode() {
-        return Double.hashCode(convertToBaseUnit());
+        return unit.getClass().hashCode();
     }
 
     // Returns a readable representation of the quantity
@@ -204,6 +220,9 @@ public class Quantity<U extends IMeasurable> {
     private double performBaseArithmetic(
             Quantity<U> other,
             ArithmeticOperation operation) {
+
+        // uc14: temperature measurement with selective arithmetic support and IMeasurable refactoring
+        unit.validateOperationSupport(operation.name());
 
         double firstBase =
                 unit.convertToBaseUnit(value);

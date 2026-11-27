@@ -65,68 +65,67 @@ public class QuantityMeasurementApp {
     // Main method
     // uc10: generic quantity class with unit interface
     public static void main(String[] args) {
-        // uc12: subtraction and division operations
 
-        // SUBTRACTION OPERATIONS
+        // uc14: temperature measurement with selective arithmetic support and IMeasurable refactoring
+        System.out.println("\n=== Temperature Demonstration ===");
 
-        // Feet - Inches (implicit target unit)
-        Quantity<LengthUnit> subtraction1 =
-                new Quantity<>(10.0, LengthUnit.FEET);
+        // Temperature equality
+        Quantity<TemperatureUnit> temperature1 =
+                new Quantity<>(0.0, TemperatureUnit.CELSIUS);
 
-        Quantity<LengthUnit> subtraction2 =
-                new Quantity<>(6.0, LengthUnit.INCHES);
+        Quantity<TemperatureUnit> temperature2 =
+                new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
 
-        System.out.println("Subtraction (Feet): "
-                + demonstrateSubtraction(subtraction1, subtraction2));
+        System.out.println("Temperature equality: "
+                + demonstrateEquality(temperature1, temperature2));
 
-        // Feet - Inches (explicit target unit)
-        System.out.println("Subtraction (Inches): "
-                + demonstrateSubtraction(
-                subtraction1, subtraction2, LengthUnit.INCHES));
+        // Celsius to Fahrenheit conversion
+        Quantity<TemperatureUnit> celsius =
+                new Quantity<>(100.0, TemperatureUnit.CELSIUS);
 
-        // Subtraction resulting in a negative value
-        System.out.println("Negative subtraction: "
-                + demonstrateSubtraction(
-                new Quantity<>(5.0, LengthUnit.FEET),
-                new Quantity<>(10.0, LengthUnit.FEET)));
+        System.out.println("Celsius to Fahrenheit: "
+                + demonstrateConversion(
+                celsius, TemperatureUnit.FAHRENHEIT));
 
-        // Weight subtraction
-        System.out.println("Weight subtraction: "
-                + demonstrateSubtraction(
-                new Quantity<>(10.0, WeightUnit.KILOGRAM),
-                new Quantity<>(5000.0, WeightUnit.GRAM)));
+        // Fahrenheit to Celsius conversion
+        Quantity<TemperatureUnit> fahrenheit =
+                new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
 
-        // Volume subtraction
-        System.out.println("Volume subtraction: "
-                + demonstrateSubtraction(
-                new Quantity<>(5.0, VolumeUnit.LITRE),
-                new Quantity<>(500.0, VolumeUnit.MILLILITRE)));
+        System.out.println("Fahrenheit to Celsius: "
+                + demonstrateConversion(
+                fahrenheit, TemperatureUnit.CELSIUS));
 
+        // Celsius to Kelvin conversion
+        System.out.println("Celsius to Kelvin: "
+                + demonstrateConversion(
+                temperature1, TemperatureUnit.KELVIN));
 
-        // DIVISION OPERATIONS
+        // Unsupported addition
+        try {
+            temperature1.add(temperature2);
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Addition error: " + e.getMessage());
+        }
 
-        // Same-unit division
-        System.out.println("Feet division: "
-                + demonstrateDivision(
-                new Quantity<>(10.0, LengthUnit.FEET),
-                new Quantity<>(2.0, LengthUnit.FEET)));
+        // Unsupported subtraction
+        try {
+            temperature1.subtract(temperature2);
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Subtraction error: " + e.getMessage());
+        }
 
-        // Different-unit division
-        System.out.println("Cross-unit division: "
-                + demonstrateDivision(
-                new Quantity<>(24.0, LengthUnit.INCHES),
-                new Quantity<>(2.0, LengthUnit.FEET)));
+        // Unsupported division
+        try {
+            temperature1.divide(temperature2);
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Division error: " + e.getMessage());
+        }
 
-        // Weight division
-        System.out.println("Weight division: "
-                + demonstrateDivision(
-                new Quantity<>(2000.0, WeightUnit.GRAM),
-                new Quantity<>(1.0, WeightUnit.KILOGRAM)));
+        // Arithmetic support verification
+        System.out.println("Temperature arithmetic supported: "
+                + TemperatureUnit.CELSIUS.supportsArithmetic());
 
-        // Volume division
-        System.out.println("Volume division: "
-                + demonstrateDivision(
-                new Quantity<>(5.0, VolumeUnit.LITRE),
-                new Quantity<>(10.0, VolumeUnit.LITRE)));
+        System.out.println("Length arithmetic supported: "
+                + LengthUnit.FEET.supportsArithmetic());
     }
 }
