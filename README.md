@@ -59,3 +59,7 @@ Refactor addition, subtraction, and division operations by introducing centraliz
 #### Use Case 14: Temperature Measurement with Selective Arithmetic Support and IMeasurable Refactoring
 
 Extend the Quantity Measurement App to support Celsius, Fahrenheit, and Kelvin conversions while refactoring IMeasurable to provide selective arithmetic support, preventing unsupported operations on temperature measurements.
+
+#### Use Case 15: N-Tier Architecture Refactoring
+
+Refactor the Quantity Measurement Application into a four-tier architecture by separating application, controller, service, and entity/model responsibilities.
