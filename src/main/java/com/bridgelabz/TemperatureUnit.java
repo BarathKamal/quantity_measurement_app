@@ -94,4 +94,12 @@ public enum TemperatureUnit implements IMeasurable {
             throw new UnsupportedOperationException(message);
         }
     }
+
+    // uc15: n-tier architecture refactoring
+    // Retrieves a temperature unit using its name
+    @Override
+    public IMeasurable getUnitInstance(String unitName) {
+        return TemperatureUnit.valueOf(unitName.toUpperCase());
+    }
+
 }

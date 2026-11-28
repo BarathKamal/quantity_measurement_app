@@ -38,5 +38,13 @@ public enum VolumeUnit implements IMeasurable {
     public String getUnitName() {
         return name();
     }
+
+    // uc15: n-tier architecture refactoring
+    // Retrieves a volume unit using its name
+    @Override
+    public IMeasurable getUnitInstance(String unitName) {
+        return VolumeUnit.valueOf(unitName.toUpperCase());
+    }
+
 }
 

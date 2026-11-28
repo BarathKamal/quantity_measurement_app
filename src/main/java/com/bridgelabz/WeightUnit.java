@@ -39,4 +39,12 @@ public enum WeightUnit implements IMeasurable {
     public String getUnitName() {
         return name();
     }
+
+    // uc15: n-tier architecture refactoring
+    // Retrieves a weight unit using its name
+    @Override
+    public IMeasurable getUnitInstance(String unitName) {
+        return WeightUnit.valueOf(unitName.toUpperCase());
+    }
+
 }

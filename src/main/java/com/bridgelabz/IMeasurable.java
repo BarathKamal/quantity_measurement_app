@@ -29,5 +29,15 @@ public interface IMeasurable {
         // Existing measurement categories support arithmetic by default
     }
 
+    // uc15: n-tier architecture refactoring
+    // Returns the measurement category
+    default String getMeasurementType() {
+        return getClass().getSimpleName();
+    }
+
+    // Retrieves a unit instance using its name
+    IMeasurable getUnitInstance(String unitName);
+
+
 }
 
